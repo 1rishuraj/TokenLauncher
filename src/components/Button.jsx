@@ -15,8 +15,8 @@ const Button = ({name,symbol,url,supply}) => {
         })
         const metadata = {
             mint: mintKeypair.publicKey,
-            name: {name},
-            symbol: {symbol},
+            name: name,
+            symbol: symbol,
             url: `https://solana-metadata.vercel.app/${response.data.tokenID}`,
             additionalMetadata: [],
         };
@@ -74,9 +74,9 @@ const Button = ({name,symbol,url,supply}) => {
         );
 
         await wallet.sendTransaction(transaction2, connection);
-
+        alert(supply)
         const transaction3 = new Transaction().add(
-            createMintToInstruction(mintKeypair.publicKey, associatedToken, wallet.publicKey,{supply}*1000000000, [], TOKEN_2022_PROGRAM_ID)
+            createMintToInstruction(mintKeypair.publicKey, associatedToken, wallet.publicKey,supply*1000000000, [], TOKEN_2022_PROGRAM_ID)
         );
 
         await wallet.sendTransaction(transaction3, connection);
