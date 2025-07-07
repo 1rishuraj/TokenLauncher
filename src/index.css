@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+/* Must come AFTER tailwind */
+@import "@solana/wallet-adapter-react-ui/styles.css";
+
+/* Custom styles for WalletMultiButton */
+.wallet-adapter-button {
+  background-color: #4f46e5 !important; /* indigo-600 */
+  color: white !important;
+  font-weight: bold;
+  border-radius: 0.5rem; /* rounded-md */
+  padding: 0.5rem 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease-in-out;
+}
+
+.wallet-adapter-button:hover {
+  background-color: #4338ca !important; /* indigo-700 */
+  transform: scale(1.05);
+}
