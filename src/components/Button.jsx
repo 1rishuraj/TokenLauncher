@@ -13,11 +13,14 @@ const Button = ({name,symbol,url,supply}) => {
         const response=await axios.post('https://solana-metadata.vercel.app/api',{
             name,symbol,image:url
         })
+        const metauri=`https://solana-metadata.vercel.app/metadata/${response.data.tokenID}`;
+        alert(`🔗 Metadata URI created:\n${metauri}`);
+
         const metadata = {
             mint: mintKeypair.publicKey,
             name: name,
             symbol: symbol,
-            url: `https://solana-metadata.vercel.app/${response.data.tokenID}`,
+            uri: metauri,
             additionalMetadata: [],
         };
 
@@ -50,9 +53,11 @@ const Button = ({name,symbol,url,supply}) => {
         transaction.feePayer = wallet.publicKey;
         transaction.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
         transaction.partialSign(mintKeypair);
+        alert("🚀 Sending transaction to create mint...");
 
         await wallet.sendTransaction(transaction, connection);
-        alert(mintKeypair.publicKey.toBase58())
+        alert(`✅ Mint created!\nMint Address: ${mintKeypair.publicKey.toBase58()}`);
+
 
         const associatedToken = getAssociatedTokenAddressSync(
             mintKeypair.publicKey,
@@ -63,6 +68,7 @@ const Button = ({name,symbol,url,supply}) => {
 
         console.log(associatedToken.toBase58());
 
+        alert("🏦 Creating your token account...");
         const transaction2 = new Transaction().add(
             createAssociatedTokenAccountInstruction(
                 wallet.publicKey,
@@ -74,13 +80,17 @@ const Button = ({name,symbol,url,supply}) => {
         );
 
         await wallet.sendTransaction(transaction2, connection);
-        alert(supply)
+        alert(`✅ Token account created at:\n${associatedToken.toBase58()}`);
+
+        alert(`💰 Minting ${supply} tokens...`);
         const transaction3 = new Transaction().add(
             createMintToInstruction(mintKeypair.publicKey, associatedToken, wallet.publicKey,supply*1000000000, [], TOKEN_2022_PROGRAM_ID)
         );
 
         await wallet.sendTransaction(transaction3, connection);
-        alert(`1,000,000,000 tokens minted to the Associated Token Account.`);
+        alert(`🎉 Done!\n${supply * 1_000_000_000} tokens minted to your wallet.`);
+
+        alert("✨ Your token is live on Solana!");
 
     }
     return (
