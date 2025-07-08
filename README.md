@@ -10,8 +10,8 @@ Built with:
 - ☁️ Hosted Metadata API
 - ⚛️ React + TailwindCSS
 
+![Maang (1)](https://github.com/user-attachments/assets/f36563c1-3079-4ece-bc79-0f7b5a9c5793)
 
-![Maang](https://github.com/user-attachments/assets/e7fdc2ea-bdb4-4b00-904b-c47fd82aa047)
 
 ## 🔧 Features
 
