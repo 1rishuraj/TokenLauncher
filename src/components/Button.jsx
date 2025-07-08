@@ -3,12 +3,14 @@ import { Keypair, SystemProgram, Transaction } from "@solana/web3.js"
 import { createAssociatedTokenAccountInstruction, createInitializeInstruction, createInitializeMetadataPointerInstruction, createInitializeMintInstruction, createMintToInstruction, ExtensionType, getAssociatedTokenAddressSync, getMintLen, LENGTH_SIZE, TOKEN_2022_PROGRAM_ID, TYPE_SIZE } from "@solana/spl-token"
 import { pack } from '@solana/spl-token-metadata'
 import axios from "axios"
+import { ThreeDot } from "react-loading-indicators"
+import { useState } from "react"
 const Button = ({name,symbol,url,supply}) => {
     const { connection } = useConnection();
     const wallet = useWallet();
-
+    const [load, setload] = useState(false);
     async function onclickhandler() {
-
+        setload(true)
         const mintKeypair = Keypair.generate();
         const response=await axios.post('https://solana-metadata.vercel.app/api',{
             name,symbol,image:url
@@ -88,15 +90,16 @@ const Button = ({name,symbol,url,supply}) => {
         );
 
         await wallet.sendTransaction(transaction3, connection);
-        alert(`🎉 Done!\n${supply * 1_000_000_000} tokens minted to your wallet.`);
+        alert(`🎉 Done!\n${supply} tokens minted to your wallet.`);
 
         alert("✨ Your token is live on Solana!");
-
+        setload(false)
     }
     return (
-
-        <button onClick={onclickhandler} type="button" className="text-white bg-gray-900 hover:bg-gray-950 focus:outline-1 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 shadow-none ">Create Your Token</button>
-
+        <div>
+        {load? (<ThreeDot color="#4338CA" size="small" text="" textColor="" />):
+        <button onClick={onclickhandler} type="button" className="text-white bg-gray-900 hover:bg-gray-950 focus:outline-1 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 shadow-none ">Create Your Token</button>}
+        </div>
     )
 }
 export default Button
